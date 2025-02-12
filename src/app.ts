@@ -1,12 +1,17 @@
-import http from 'http';
+import express, { Application } from 'express';
+import bodyParser from 'body-parser';
+import personRoutes from './routes/personRoutes';
 
-const requestListener = (req: http.IncomingMessage, res: http.ServerResponse) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello, TypeScript with Node.js!');
-};
+const app: Application = express();
 
-const server = http.createServer(requestListener);
+// Middleware
+app.use(bodyParser.json());
 
-server.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+// Routes
+app.use('/api', personRoutes);
+
+// Start the server
+const port: number = 3000;
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
