@@ -3,7 +3,7 @@ import { Person } from '../models/person';
 
 let people: Person[] = []; // Simulierte Datenbank (in-memory)
 
-export const getAllPeople = (req: Request, res: Response): void => {
+export const getAllPersons = (req: Request, res: Response): void => {
   res.status(200).json(people);
 };
 

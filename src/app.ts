@@ -1,17 +1,20 @@
 import express, { Application } from 'express';
-import bodyParser from 'body-parser';
-import personRoutes from './routes/personRoutes';
+import { addPerson, getPersons } from "./db";
 
-const app: Application = express();
+const app = express();
+app.use(express.json());
 
-// Middleware
-app.use(bodyParser.json());
-
-// Routes
-app.use('/api', personRoutes);
-
-// Start the server
-const port: number = 3000;
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// GET: Alle Personen abrufen
+app.get("/persons", async (req, res) => {
+  const persons = await getPersons();
+  res.json(persons);
 });
+
+// POST: Neue Person hinzufügen
+app.post("/persons", async (req, res) => {
+  const { name, surname, email, phone } = req.body;
+  await addPerson(name, surname, email, phone);
+  res.status(201).json({ message: "Person hinzugefügt" });
+});
+
+app.listen(3000, () => console.log("✅ Server läuft auf http://localhost:3000"));
